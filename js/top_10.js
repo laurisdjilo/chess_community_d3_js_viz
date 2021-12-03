@@ -13,7 +13,8 @@ var data;
 
 function restart(){
   year = 2000;
-  let ticker = d3.interval(e => {
+  ticker.stop();
+  ticker = d3.interval(e => {
 
     yearSlice = data.filter(d => d.year == year && !isNaN(d.value))
       .sort((a,b) => b.value - a.value)
@@ -182,6 +183,8 @@ let caption = svg.append('text')
 
 let year = 2000;
 
+var x, y, xAxis, yearText, ticker;
+
 d3.csv('../datasets/top_10.csv').then(function(t) {
   data = t;
   data.forEach(d => {
@@ -199,15 +202,15 @@ d3.csv('../datasets/top_10.csv').then(function(t) {
   yearSlice.forEach((d,i) => d.rank = i);
 
 
-  let x = d3.scaleLinear()
+  x = d3.scaleLinear()
     .domain([minrating, d3.max(yearSlice, d => d.value)])
     .range([margin.left, width-margin.right-65]);
 
-  let y = d3.scaleLinear()
+  y = d3.scaleLinear()
     .domain([top_n, 0])
     .range([height-margin.bottom, margin.top]);
 
-  let xAxis = d3.axisTop()
+  xAxis = d3.axisTop()
     .scale(x)
     .ticks(width > 500 ? 5:2)
     .tickSize(-(height-margin.top-margin.bottom))
@@ -250,7 +253,7 @@ svg.selectAll('text.valueLabel')
   .attr('y', d => y(d.rank)+5+((y(1)-y(0))/2)+1)
   .text(d => d3.format(',.0f')(d.lastValue));
 
-let yearText = svg.append('text')
+yearText = svg.append('text')
   .attr('class', 'yearText')
   .attr('x', width-margin.right)
   .attr('y', 50)
@@ -260,7 +263,7 @@ let yearText = svg.append('text')
   .style('opacity', 1)
   .html("Janvier \t"+year);
 
-let ticker = d3.interval(e => {
+ticker = d3.interval(e => {
 
   yearSlice = data.filter(d => d.year == year && !isNaN(d.value))
     .sort((a,b) => b.value - a.value)
@@ -268,8 +271,6 @@ let ticker = d3.interval(e => {
 
   yearSlice.forEach((d,i) => d.rank = i);
   
-  //console.log('IntervalYear: ', yearSlice);
-
   x.domain([minrating, d3.max(yearSlice, d => d.value)]); 
   
   svg.select('.xAxis')
