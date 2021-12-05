@@ -390,13 +390,3 @@ ticker = d3.interval(e => {
 },tickDuration);
 
 });
-    
-const halo = function(text, strokeWidth) {
-  text.select(function() { return this.parentNode.insertBefore(this.cloneNode(true), this); })
-    .style('fill', '#ffffff')
-     .style( 'stroke','#ffffff')
-     .style('stroke-width', strokeWidth)
-     .style('stroke-linejoin', 'round')
-     .style('opacity', 1);
-   
-}
