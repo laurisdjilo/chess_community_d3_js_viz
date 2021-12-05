@@ -15,7 +15,10 @@ const months = ['Janvier 2020', 'Février 2020', 'Mars 2020', 'Avril 2020', 'Mai
 const margin = {top: 40, right: 150, bottom: 60, left: 30},
     width = getWidth()*.8*.9 - margin.left - margin.right,
     height = 420 - margin.top - margin.bottom;
-
+var ticker, x, y, z;
+const animationDuration = 1000;
+const crossMonthsDelay = 1000;
+const restartDuration = 1000;
 // append the svg object to the body of the page
 const svg = d3.select("#my_dataviz")
   .append("svg")
@@ -27,30 +30,29 @@ const svg = d3.select("#my_dataviz")
   
 function restart(){
   i=0;
+  ticker.stop();
   svg.selectAll("circle.bubbles")
     .transition()
-    .duration(10)
+    .duration(restartDuration)
     .attr("cx", d => x(d.nbr_players[i]))
     .attr("cy", d => y(d.top_k_avg[i]))
     .attr("r", d => z(d.nbr_titles[i]))
-  
   current_month.text(months[i]);
-  i++;
-  setInterval(
-    function(){
-      if(i<23){
-        svg.selectAll("circle.bubbles")
-          .transition()
-          .duration(1000)
-          .attr("cx", d => x(d.nbr_players[i]))
-          .attr("cy", d => y(d.top_k_avg[i]))
-          .attr("r", d => z(d.nbr_titles[i]))
-        current_month.text(months[i]);
-        i++;
-      }
+  ticker = d3.interval(e=>{
+    i++;
+    if(i<23){
+      svg.selectAll("circle.bubbles")
+        .transition()
+        .duration(animationDuration)
+        .attr("cx", d => x(d.nbr_players[i]))
+        .attr("cy", d => y(d.top_k_avg[i]))
+        .attr("r", d => z(d.nbr_titles[i]))
+      current_month.text(months[i]);
+    } else{
+      i--;
+      ticker.stop();
     }
-    , 1000
-  );
+  }, crossMonthsDelay);
 }
 
 //Read the data
@@ -59,7 +61,7 @@ d3.json("../datasets/feds_standard_evolution.json").then(function(data) {
   //       AXIS  AND SCALE      //
   // ---------------------------//
   // Add X axis
-  const x = d3.scaleLinear()
+  x = d3.scaleLinear()
     .domain([0, 20000])
     .range([0, width]);
   var xAxis = d3.axisBottom(x).ticks(15);
@@ -76,7 +78,7 @@ d3.json("../datasets/feds_standard_evolution.json").then(function(data) {
       .text("Nombre de joueurs");
 
   // Add Y axis
-  const y = d3.scaleLinear()
+  y = d3.scaleLinear()
     .domain([1000, 3000])
     .range([ height, 0]);
   var yAxis = d3.axisLeft(y);
@@ -101,7 +103,7 @@ d3.json("../datasets/feds_standard_evolution.json").then(function(data) {
       .attr("font-weight", "bold")
 
   // Add a scale for bubble size
-  const z = d3.scaleSqrt()
+  z = d3.scaleSqrt()
     .domain([0, 1000])
     .range([2, 30]);
 
@@ -196,24 +198,21 @@ d3.json("../datasets/feds_standard_evolution.json").then(function(data) {
   .on("mousemove", moveTooltip )
   .on("mouseleave", hideTooltip)
   current_month.text(months[i]);
-
-  setInterval(
-    function(){
-      i++;
-      if(i<23){
-        svg.selectAll("circle.bubbles")
-          .transition()
-          .duration(1000)
-          .attr("cx", d => x(d.nbr_players[i]))
-          .attr("cy", d => y(d.top_k_avg[i]))
-          .attr("r", d => z(d.nbr_titles[i]))
-        current_month.text(months[i]);
-      } else{
-        i--;
-      }
+  ticker = d3.interval(e=>{
+    i++;
+    if(i<23){
+      svg.selectAll("circle.bubbles")
+        .transition()
+        .duration(animationDuration)
+        .attr("cx", d => x(d.nbr_players[i]))
+        .attr("cy", d => y(d.top_k_avg[i]))
+        .attr("r", d => z(d.nbr_titles[i]))
+      current_month.text(months[i]);
+    } else{
+      i--;
+      ticker.stop();
     }
-    , 1000
-  );
+  }, crossMonthsDelay);
   
 // ---------------------------//
 //       Zooming              //
