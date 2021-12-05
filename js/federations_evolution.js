@@ -61,10 +61,12 @@ d3.json("../datasets/feds_standard_evolution.json").then(function(data) {
   // Add X axis
   const x = d3.scaleLinear()
     .domain([0, 20000])
-    .range([0, width ]);
+    .range([0, width]);
+  var xAxis = d3.axisBottom(x).ticks(15);
   svg.append("g")
+    .attr("class", "axis axis--x")
     .attr("transform", `translate(0, ${height})`)
-    .call(d3.axisBottom(x).ticks(15));
+    .call(xAxis);
 
   // Add X axis label:
   svg.append("text")
@@ -77,9 +79,11 @@ d3.json("../datasets/feds_standard_evolution.json").then(function(data) {
   const y = d3.scaleLinear()
     .domain([1000, 3000])
     .range([ height, 0]);
+  var yAxis = d3.axisLeft(y);
   svg.append("g")
+    .attr("class", "axis axis--y")
     .style("font-size", "9")
-    .call(d3.axisLeft(y));
+    .call(yAxis);
 
   // Add Y axis label:
   svg.append("text")
@@ -88,15 +92,13 @@ d3.json("../datasets/feds_standard_evolution.json").then(function(data) {
       .attr("y", -20 )
       .text("Score ELO moyen du top 10")
       .attr("text-anchor", "start")
-  
+
   current_month = svg.append("text")
-      //.attr("text-anchor", "end")
       .attr("x", width/2)
       .attr("y", 0 )
       .text("")
       .attr("font-size", "20")
       .attr("font-weight", "bold")
-      //.attr("text-anchor", "start")
 
   // Add a scale for bubble size
   const z = d3.scaleSqrt()
@@ -108,7 +110,12 @@ d3.json("../datasets/feds_standard_evolution.json").then(function(data) {
     .domain(['Asie', 'Europe', 'Afrique', 'Océanie', 'Amérique', 'Iconnu'])
     .range(d3.schemeSet1);
 
-
+  var brush = d3.brush().on("end", brushended),
+    idleTimeout,
+    idleDelay = 350;
+  svg.append("g")
+    .attr("class", "brush")
+    .call(brush);
   // ---------------------------//
   //      TOOLTIP               //
   // ---------------------------//
@@ -189,10 +196,10 @@ d3.json("../datasets/feds_standard_evolution.json").then(function(data) {
   .on("mousemove", moveTooltip )
   .on("mouseleave", hideTooltip)
   current_month.text(months[i]);
-  i++;
 
   setInterval(
     function(){
+      i++;
       if(i<23){
         svg.selectAll("circle.bubbles")
           .transition()
@@ -201,11 +208,47 @@ d3.json("../datasets/feds_standard_evolution.json").then(function(data) {
           .attr("cy", d => y(d.top_k_avg[i]))
           .attr("r", d => z(d.nbr_titles[i]))
         current_month.text(months[i]);
-        i++;
+      } else{
+        i--;
       }
     }
     , 1000
   );
+  
+// ---------------------------//
+//       Zooming              //
+// ---------------------------//
+
+  
+function brushended(event) {
+  var s = event.selection;
+  if (!s) {
+    if (!idleTimeout) return idleTimeout = setTimeout(idled, idleDelay);
+    x.domain([0, 20000]);
+    y.domain([1000, 3000]);
+  } else {
+    x.domain([s[0][0], s[1][0]].map(x.invert, x));
+    y.domain([s[1][1], s[0][1]].map(y.invert, y));
+    svg.select(".brush").call(brush.move, null);
+  }
+  zoom();
+}
+
+function idled() {
+  idleTimeout = null;
+}
+
+
+function zoom() {
+  var t = svg.transition().duration(750);
+  svg.select(".axis--x").transition(t).call(xAxis);
+  svg.select(".axis--y").transition(t).call(yAxis);
+  svg.selectAll("circle.bubbles").transition(t)
+    .attr("cx", d => x(d.nbr_players[i]))
+    .attr("cy", d => y(d.top_k_avg[i]))
+    .attr("r", d => z(d.nbr_titles[i]));
+}
+
 
 // ---------------------------//
 //       LEGEND              //
@@ -278,7 +321,17 @@ svg
     .attr('y', function(d){ return tmp - z(d) } )
     .text( function(d){ return d } )
     .style("font-size", 10)
-    .attr('alignment-baseline', 'middle')
+    .attr('alignment-baseline', 'middle');
+
+svg
+  .selectAll("legend")
+  .data(["Nombre de titres"])
+  .enter()
+  .append("text")
+    .attr("x", xLabel - 50)
+    .attr("y", tmp + 20)
+    .text( function(d){ return d })
+
 });
 
 
