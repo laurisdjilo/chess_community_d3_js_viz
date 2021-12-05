@@ -1,5 +1,5 @@
 /*  
-Template Name: mlpdesign09 -- Green Zone
+Template Name: mlpdesign09 -- 
 Author:webmasterneo, MLP Design
 Author URI: http://www.mlpdesign.net/
 */
@@ -351,7 +351,7 @@ ul#menu li a:hover {
 #show-menu {display: none;}
 .responsive { text-align:left; font-weight:bold; font-size:18px; font-style:underline; padding: 0; display:none; margin-left:20px;}
 
-@media screen and (max-width : 700px){
+@media screen and (max-width : 1000px){
   body { font-size:12px; }
   blockquote { font-size:16px; }
   blockquote:before { font-size:80px;}
