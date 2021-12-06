@@ -15,7 +15,7 @@ const months = ['Janvier 2020', 'Février 2020', 'Mars 2020', 'Avril 2020', 'Mai
 const margin = {top: 40, right: 150, bottom: 60, left: 30},
     width = getWidth()*.8*.9 - margin.left - margin.right,
     height = 420 - margin.top - margin.bottom;
-var ticker, x, y, z;
+var ticker, x, y, z, i;
 const animationDuration = 1000;
 const crossMonthsDelay = 1000;
 const restartDuration = 1000;
@@ -135,6 +135,7 @@ d3.json("../datasets/feds_standard_evolution.json").then(function(data) {
       .style("position", "absolute")
 
 
+  i=0;
   // -2- Create 3 functions to show / update (when mouse move but stay on same circle) / hide the tooltip
   const showTooltip = function(event,d) {
     tooltip
@@ -142,7 +143,7 @@ d3.json("../datasets/feds_standard_evolution.json").then(function(data) {
       .duration(200)
     tooltip
       .style("opacity", 1)
-      .html("Fédération: " + d.name)//----------------------
+      .html(`Fédération: ${d.name} <br/>Nombre de joueurs titrés: ${d.nbr_titles[i]}`)
       .style("left", (event.x)/2 + "px")
       .style("top", (event.y)/2-50 + "px")
   }
@@ -181,8 +182,6 @@ d3.json("../datasets/feds_standard_evolution.json").then(function(data) {
   // ---------------------------//
 
   // Add dots
-
-  i=0;
   svg.append('g')
   .selectAll("dot")
   .data(data)
@@ -324,10 +323,10 @@ svg
 
 svg
   .selectAll("legend")
-  .data(["Nombre de titres"])
+  .data(["Nombre de joueurs titrés"])
   .enter()
   .append("text")
-    .attr("x", xLabel - 50)
+    .attr("x", xLabel - 80)
     .attr("y", tmp + 20)
     .text( function(d){ return d })
 

@@ -25,13 +25,63 @@
 			<input type="checkbox" id="show-menu" role="button">
 			<ul id="menu">
 				<li><a href="index.html" title="Contexte">Contexte</a></li>
-				<li><a href="players_repartition.html" title="Repartition des joeurs">Répartition</a></li>
+				<li><a href="players_repartition.html" title="Repartition des joueurs">Répartition</a></li>
 				<li><a href="#" title="Evolution des fédérations" class="current">Fédérations</a></li>
 				<li><a href="top_10.html" title="Top 10 Mondial">Top 10 Mondial</a></li>
 			</ul>
 		</nav>
 		<!-- Begin Content -->
 		<div id="content">
+			<div class="post">
+				<br>
+				<h2>Données</h2>
+				<br>
+				Pour réaliser ce graphique, nous avons utilisé les informations des joueurs d'échecs enregésitrés
+				à la FIDE, mois par mois, allant de <b>Janvier 2020</b> à <b>Novembre 2021</b>. Elles sont disponibles
+				<b><a href="https://ratings.fide.com/download_lists.phtml">ici</a></b> en format XML. Nous avons écrit des scripts
+				Python pour formatter ces données afin de pouvoir les utiliser avec d3js.
+				<br><br><br>
+				<h2>Visualisation</h2>
+				<br>
+				Nous avons voulu à travers ce <b>Graphique à Bulles Evolutif</b> illustrer l'évolution des différentes fédérations nationales de jeu d'échecs
+				de <b>Janvier 2020</b> à <b>Novembre 2021</b>.
+				Les critères utilisés sont:
+				<ul>
+					<li>Le nombre de joueurs actifs de la fédération,</li>
+					<li>Le score ELO moyen du top 10 actif de la fédération,</li>
+					<li>Le nombre de joueurs titrés actifs de la fédération.</li>
+				</ul>
+				<h3>Interactions possibles</h3>
+				<ul>
+					<li>
+						<b>Le zoom</b>: pour permettre de visualiser l'évolution des fédérations qui sont regroupées
+						sur le graphique et donc pas très visibles, il est possible de zoomer sur une partie du graphique
+						en définissant une zone rectangulaire avec la souris.
+						Cette manipulation permet de redéfinir l'échelle des valeurs sur chaque dimension, permettant ainsi de
+						se concentrer uniquement sur un certain nombre de fédérations.
+						<br>Pour revenir à l'échelle initiale, il suffit de double clique sur le graphique,
+					</li>
+					<li>
+						<b>Le filtre</b>: en survolant une région de la légende à droite du graphique, le graphique affiche uniquement
+						les fédérations nationale qui appartiennent à cette région du monde,
+					</li>
+					<li>
+						<b>Le tooltip</b>: le survol de la bulle d'une fédération fait apparaitre le nom de ladite fédération et le nombre
+						de joueurs titrés actifs qu'elle possède.
+					</li>
+				</ul>
+				<br><br>
+				<h2>Variables visuelles</h2>
+				<br>
+				Nous avons utilisé trois visuelles dans ce graphique:
+				<ul>
+					<li>La <b>Couleur</b>, variable associative et sélective représentant la région à la quelle chaque fédération nationale appartient,</li>
+					<li>La <b>Taille</b>, variable ordonnée, associative, sélective et quantitave représentant le nombre de joueurs actifs,</li>
+					<li>La <b>Position</b>, variable ordonnée, associative, sélective et quantitave. Elle représente la le score ELO moyen du top 10 des joueurs actifs
+						de la fédération (Axe y) en fonction du nombre de joueurs actifs de la fédération (Axe x).</li>
+				</ul>
+				<br><br>
+			</div>
 			<input id="restart" type="button" value="Relancer" onclick="restart()">
 			<div id="my_dataviz"></div>
 			<script src="../js/federations_evolution.js"></script>

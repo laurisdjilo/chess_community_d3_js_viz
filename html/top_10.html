@@ -73,13 +73,35 @@
 			<input type="checkbox" id="show-menu" role="button">
 			<ul id="menu">
 				<li><a href="index.html" title="Contexte">Contexte</a></li>
-				<li><a href="players_repartition.html" title="Repartition des joeurs">Répartition</a></li>
+				<li><a href="players_repartition.html" title="Repartition des joueurs">Répartition</a></li>
 				<li><a href="federations_evolution.html" title="Evolution des fédérations">Fédérations</a></li>
 				<li><a href="#" title="Top 10 Mondial" class="current">Top 10 Mondial</a></li>
 			</ul>
 		</nav>
 		<!-- Begin Content -->
 		<div id="content">
+			<div class="post">
+				<br>
+				<h2>Données</h2>
+				<br>
+				La réalisation de ce graphique est faite sur la base des du classement mondial des 10 meilleurs joueurs
+				d'échecs au mois de <b>Janver</b> de chaque année, de <b>2000</b> à <b>2021</b>.
+				Ces données sont mises à disposition sur le site <b>Kaggle</b> sous ce <b><a href="https://www.kaggle.com/medaxone/top-20-chess-ratings-20002021">lien</a></b>.
+				<br><br><br>
+				<h2>Visualisation</h2>
+				<br>
+				Pour illustrer l'évolution de ce classement dans le temps, nous avons opté pour un <b>Bar Race Chart</b>.
+				L'unique critère de comparaison des joueurs étant leur score ELO.
+				<br><br><br>
+				<h2>Variables visuelles</h2>
+				<br>
+				Nous avons utilisé deux visuelles dans ce graphique:
+				<ul>
+					<li>La <b>Taille</b>, variable ordonnée, associative, sélective et quantitave représentant le score ELO des joueurs,</li>
+					<li>La <b>Position</b>, variable ordonnée, associative, sélective et quantitave. Elle représente la position des joueurs dans le classement.</li>
+				</ul>
+				<br><br>
+			</div>
 			<input id="restart" type="button" value="Relancer" onclick="restart()">
 			<div id="my_dataviz"></div>
 			<script src="../js/top_10.js"></script>

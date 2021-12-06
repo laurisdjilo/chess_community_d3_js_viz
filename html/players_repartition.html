@@ -25,13 +25,42 @@
 			<input type="checkbox" id="show-menu" role="button">
 			<ul id="menu">
 				<li><a href="index.html" title="Contexte">Contexte</a></li>
-				<li><a href="#" title="Repartition des joeurs" class="current">Répartition</a></li>
+				<li><a href="#" title="Repartition des joueurs" class="current">Répartition</a></li>
 				<li><a href="federations_evolution.html" title="Evolution des fédérations">Fédérations</a></li>
 				<li><a href="top_10.html" title="Top 10 Mondial">Top 10 Mondial</a></li>
 			</ul>
 		</nav>
 		<!-- Begin Content -->
 		<div id="content">
+			<div class="post">
+				<br/>
+				<h2>Données</h2>
+				<br>
+				Pour la réalisation de ce graphique nous avons utilisé les données de la liste des joueurs
+				d'échecs enregistrés à la <b>FIDE</b>. Ces données sont disponibles en format XML <b><a href="http://ratings.fide.com/download/players_list_xml.zip">ici</a></b>.
+				Elles donnent des informations telles que le nom, le sexe, le titre, la fédération, le fait que le joueur soit encore actif ou pas.
+				<br>Afin de mettre les données dans le format necessaire pour la réalisation du graphique, nous avons écrit des scripts Python
+				disponibles dans les sources du TP.
+				<br><br><br>
+				<h2>Visualisation</h2>
+				<br>
+				Pour illustrer la repartition des joueurs d'échecs, nous avons opté pour un <b>Sunburst Zoomable</b>
+				avec 4 niveaux d'informations:
+				<ol>
+					<li>Le <b>titre</b>: pouvant prendre les valeurs GM, WGM, IM, WIM, FM, WFM, CM et WCM,</li>
+					<li>Le <b>sexe</b>: pouvant prendre les valeurs Homme et Femme,</li>
+					<li>La <b>fédération</b>: représentant l'abbréviation à trois lettre la fédération nationale du joueur,</li>
+					<li>L'<b>activité</b>: pouvant prendre les valeurs actif et inactif.</li>
+				</ol>
+				<br>
+				<h2>Variables visuelles</h2>
+				<br>
+				Nous avons utilisé deux variables visuelles dans ce graphique:
+				<ul>
+					<li>La <b>Couleur</b>, variable associative et sélective représentant la catégorie de données, suivant les attributs cités plus haut,</li>
+					<li>La <b>Taille</b>, variable ordonnée, associative, sélective et quantitave représentant l'éffectif de joueurs dans une catégorie.</li>
+				</ul>
+			</div>
 			<div id="my_dataviz"></div>
 			<script src="../js/players_repartition.js"></script>
 		</div>

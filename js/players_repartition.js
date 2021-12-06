@@ -18,7 +18,7 @@ chart = function(data) {
         .style("font", "7px sans-serif");
   
     const g = svg.append("g")
-        .attr("transform", `translate(${width / 2},${width / 3})`);
+        .attr("transform", `translate(${width / 2},${width / 2})`);
   
     const path = g.append("g")
       .selectAll("path")
@@ -108,7 +108,7 @@ d3.json("../datasets/players_standard_repartition.json").then(function(data) {
     color = d3.scaleOrdinal(d3.quantize(d3.interpolateRainbow, data.children.length + 1));
     format = d3.format(",d");
     width = 650;
-    radius = width / 10;
+    radius = width / 9;
     arc = d3.arc()
         .startAngle(d => d.x0)
         .endAngle(d => d.x1)
